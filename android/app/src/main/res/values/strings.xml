@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Voice Magic AI</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_studio">Voice Studio</string>
+    <string name="nav_live">Live Mode</string>
+    <string name="nav_ai">AI Voice Lab</string>
+    <string name="nav_editor">Audio Editor</string>
+    <string name="nav_library">My Library</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Generic -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="done">Done</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="create">Create</string>
+    <string name="apply">Apply</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="play">Play</string>
+    <string name="open">Open</string>
+    <string name="share">Share</string>
+    <string name="export">Export</string>
+    <string name="refresh">Refresh</string>
+    <string name="more">More</string>
+    <string name="name">Name</string>
+    <string name="status_title">Status</string>
+    <string name="checking">Checking…</string>
+    <string name="working">Working…</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="continue_label">Continue</string>
+    <string name="none_yet">Nothing here yet.</string>
+    <string name="online">Online</string>
+    <string name="offline">Offline</string>
+    <string name="available_offline">Works offline</string>
+    <string name="requires_online">Requires internet</string>
+    <string name="in_cloud">In the cloud</string>
+    <string name="free_plan">Free plan</string>
+    <string name="premium">Premium</string>
+    <string name="premium_badge">PRO</string>
+    <string name="version_credit">Voice Magic AI 0.1.0 — created by محمدطاها طاهریان</string>
+
+    <!-- Home -->
+    <string name="quick_changer">Quick voice changer</string>
+    <string name="live_button">Go live</string>
+    <string name="recent_effects">Recently used effects</string>
+    <string name="recent_recordings">Recent recordings</string>
+    <string name="offline_features_ok">Effects, recording and editing work without internet.</string>
+    <string name="ai_status">AI cloud status</string>
+    <string name="cloud_not_configured">Cloud AI is not set up. Everything else works offline.</string>
+    <string name="cloud_unreachable">Cloud AI unreachable: %1$s</string>
+    <string name="cloud_no_provider">Server reachable, but no AI provider is configured on it. Credits: %1$d</string>
+    <string name="cloud_ready">Cloud AI ready. Credits: %1$d</string>
+
+    <!-- Effect categories -->
+    <string name="cat_all">All</string>
+    <string name="cat_voice">Voices</string>
+    <string name="cat_character">Characters</string>
+    <string name="cat_comms">Communication</string>
+    <string name="cat_space">Space</string>
+    <string name="cat_cinematic">Cinematic</string>
+    <string name="cat_custom">My profiles</string>
+
+    <!-- Effects -->
+    <string name="fx_male">Male voice</string>
+    <string name="fx_male_d">Lower, fuller voice.</string>
+    <string name="fx_female">Female voice</string>
+    <string name="fx_female_d">Higher, brighter voice.</string>
+    <string name="fx_child">Child voice</string>
+    <string name="fx_child_d">Small, high voice.</string>
+    <string name="fx_elderly">Elderly voice</string>
+    <string name="fx_elderly_d">Slightly lower with a soft tremble.</string>
+    <string name="fx_robot">Robot</string>
+    <string name="fx_robot_d">Metallic ring-modulated voice.</string>
+    <string name="fx_alien">Alien</string>
+    <string name="fx_alien_d">High, warbling voice with an eerie echo.</string>
+    <string name="fx_monster">Monster</string>
+    <string name="fx_monster_d">Very deep, growling and gritty.</string>
+    <string name="fx_cartoon">Cartoon</string>
+    <string name="fx_cartoon_d">Bright, bouncy cartoon character.</string>
+    <string name="fx_helium">Helium</string>
+    <string name="fx_helium_d">Like inhaling helium.</string>
+    <string name="fx_chipmunk">Chipmunk</string>
+    <string name="fx_chipmunk_d">Extremely high and squeaky.</string>
+    <string name="fx_deep">Deep voice</string>
+    <string name="fx_deep_d">Powerful low voice.</string>
+    <string name="fx_radio">Radio voice</string>
+    <string name="fx_radio_d">Band-limited broadcast sound.</string>
+    <string name="fx_phone">Telephone voice</string>
+    <string name="fx_phone_d">Narrow-band old telephone line.</string>
+    <string name="fx_echo">Echo</string>
+    <string name="fx_echo_d">Repeating echoes.</string>
+    <string name="fx_reverb">Reverb</string>
+    <string name="fx_reverb_d">Room and hall ambience.</string>
+    <string name="fx_trailer">Movie trailer</string>
+    <string name="fx_trailer_d">Deep, huge cinematic announcer.</string>
+    <string name="fx_cave">Cave</string>
+    <string name="fx_cave_d">Long dark echoing cavern.</string>
+
+    <!-- Effect controls -->
+    <string name="effect">Effect</string>
+    <string name="favorite">Favorite</string>
+    <string name="intensity">Intensity</string>
+    <string name="pitch">Pitch</string>
+    <string name="formant">Formant</string>
+    <string name="echo">Echo</string>
+    <string name="delay">Delay</string>
+    <string name="feedback">Feedback</string>
+    <string name="reverb">Reverb</string>
+    <string name="room_size">Room size</string>
+    <string name="distortion">Distortion</string>
+    <string name="eq_low">Low</string>
+    <string name="eq_mid">Mid</string>
+    <string name="eq_high">High</string>
+    <string name="preview">Preview</string>
+    <string name="play_original">Play original</string>
+    <string name="local_effect_label">Local effect (not AI)</string>
+    <string name="save_preset">Save preset</string>
+    <string name="save_to_library">Save to library</string>
+    <string name="saved_to_library">Saved to your library.</string>
+    <string name="studio_sample">Sample</string>
+    <string name="record">Record</string>
+    <string name="re_record">Record again</string>
+    <string name="sample_none">No sample yet. Record one or import a file.</string>
+    <string name="sample_ready">Sample ready (%1$.1f s)</string>
+    <string name="import_audio">Import audio</string>
+
+    <!-- Live -->
+    <string name="mute">Mute</string>
+    <string name="input_level">Input</string>
+    <string name="output_level">Output</string>
+    <string name="clipping">Clipping!</string>
+    <string name="noise_suppression">Noise suppression</string>
+    <string name="headphone_monitor">Headphone monitoring</string>
+    <string name="headphone_monitor_nohp">Connect headphones to monitor your voice.</string>
+    <string name="feedback_warning">Monitoring through the speaker can cause loud feedback. Use headphones.</string>
+    <string name="low_latency">Low-latency audio</string>
+    <string name="standard_latency">Standard audio (low-latency path not available)</string>
+    <string name="stop_save">Stop and save</string>
+    <string name="live_interrupted">Live mode was interrupted (call or another app took the microphone).</string>
+    <string name="live_note">Live mode processes your voice on this device. It does not change the microphone used by other apps.</string>
+
+    <!-- Permissions -->
+    <string name="mic_explain_title">Microphone access</string>
+    <string name="mic_explain_body">Voice Magic AI needs the microphone only while you press Record or Live. Audio is processed on your device and is never recorded in the background.</string>
+    <string name="mic_denied_title">Microphone permission denied</string>
+    <string name="mic_denied_body">Recording is not possible without the microphone permission. You can still import audio files. To enable it, open the system settings for this app.</string>
+
+    <!-- Editor -->
+    <string name="editor_empty">Import an audio file or record to start editing.</string>
+    <string name="editor_selection_hint">Drag on the waveform to select a range. Tools apply to the selection, or to the whole track if nothing is selected.</string>
+    <string name="trim">Trim</string>
+    <string name="crop_out">Remove selection</string>
+    <string name="split">Split</string>
+    <string name="merge">Merge</string>
+    <string name="mix">Mix</string>
+    <string name="play_mix">Play mix</string>
+    <string name="undo">Undo</string>
+    <string name="redo">Redo</string>
+    <string name="tools">Tools</string>
+    <string name="tool_volume">Volume</string>
+    <string name="tool_speed">Speed</string>
+    <string name="tool_pitch">Pitch</string>
+    <string name="tool_eq">Equalizer</string>
+    <string name="tool_denoise">Noise reduction</string>
+    <string name="tool_fade">Fade</string>
+    <string name="fade_in">Fade in</string>
+    <string name="fade_out">Fade out</string>
+    <string name="track_level">Track volume</string>
+    <string name="speed_note">Changing speed also changes pitch, like a tape.</string>
+    <string name="denoise_note">Reduces steady background noise. Strong settings can make speech sound thin.</string>
+    <string name="project">Project</string>
+    <string name="projects">Projects</string>
+    <string name="save_project">Save project</string>
+    <string name="project_saved">Project saved.</string>
+    <string name="export_done">Exported.</string>
+    <string name="open_in_editor">Open in editor</string>
+    <string name="mp3_unavailable">MP3 export is not available on this device. Use WAV or AAC/M4A.</string>
+    <string name="err_import">Could not import this file.</string>
+    <string name="err_export">Export failed.</string>
+    <string name="err_process">Processing failed.</string>
+    <string name="err_split">Could not split here.</string>
+    <string name="err_merge">Could not merge these tracks.</string>
+    <string name="err_mix">Could not mix the tracks.</string>
+    <string name="err_mic_open">Could not open the microphone.</string>
+    <string name="err_live_start">Could not start live mode.</string>
+
+    <!-- Library -->
+    <string name="recordings">Recordings</string>
+
+    <!-- AI Voice Lab -->
+    <string name="voice_profiles">Voice profiles</string>
+    <string name="new_profile">New profile</string>
+    <string name="voice_samples">Voice samples</string>
+    <string name="samples_count">%1$d samples</string>
+    <string name="record_sample">Record a sample</string>
+    <string name="record_consent">Record consent statement</string>
+    <string name="consent_recorded">Consent statement recorded</string>
+    <string name="consent_given">Consent given</string>
+    <string name="consent_statement_intro">Voice cloning is only allowed for your own voice, or a voice you have explicit permission to use. Confirm each point:</string>
+    <string name="consent_own">This is my own voice, or I have written permission from the speaker.</string>
+    <string name="consent_no_deceive">I will not use it to impersonate or deceive anyone.</string>
+    <string name="consent_upload">I understand samples may be uploaded to the cloud server I configured, and I can delete them at any time.</string>
+    <string name="consent_record_phrase">Record yourself saying: \"I consent to creating an AI voice profile from my own voice.\"</string>
+    <string name="consent_policy_short">Profiles need your explicit consent. No impersonation of real people. Converted audio is labeled as AI-generated.</string>
+    <string name="local_demo_mode">Local demonstration mode</string>
+    <string name="local_demo_explain">No AI service is connected. Conversion here uses the local DSP effects with your profile settings. It is NOT neural voice cloning.</string>
+    <string name="convert_voice">Convert voice</string>
+    <string name="convert_local">Convert locally (demo)</string>
+    <string name="convert_cloud">Convert with cloud AI</string>
+    <string name="cloud_convert_unavailable">Cloud AI is not available. Set up a backend in Settings.</string>
+    <string name="upload_cloud_profile">Upload samples to cloud</string>
+    <string name="cloud_profile_created">Cloud profile created.</string>
+    <string name="ai_generated_label">AI-generated / converted audio</string>
+    <string name="save_and_test">Save and test</string>
+    <string name="delete_profile">Delete profile</string>
+    <string name="delete_samples">Delete samples</string>
+    <string name="err_no_samples">Record or import a sample first.</string>
+    <string name="cloud_disclosure_title">Upload to cloud?</string>
+    <string name="cloud_disclosure_body">Your voice recording will be sent over HTTPS to the backend server you configured, which forwards it to an AI provider to process it. You can delete uploaded data any time from Settings.</string>
+    <string name="agree_upload">I agree, upload</string>
+    <string name="err_cloud_delete">Could not delete cloud data. Check the connection.</string>
+
+    <!-- Settings -->
+    <string name="language">Language</string>
+    <string name="appearance">Appearance</string>
+    <string name="theme_dark">Dark</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_system">System</string>
+    <string name="accent_color">Accent color</string>
+    <string name="font_size">Font size</string>
+    <string name="cloud_settings">Cloud AI backend</string>
+    <string name="cloud_settings_help">Optional. Enter the address of your own Voice Magic AI backend and its access token. Provider API keys stay on the server, never in this app.</string>
+    <string name="backend_url">Backend URL (https://…)</string>
+    <string name="api_token">Access token</string>
+    <string name="your_data">Your data</string>
+    <string name="delete_all_voice_data">Delete all voice profiles and samples</string>
+    <string name="delete_cloud_data">Delete my data on the server</string>
+    <string name="delete_all_local">Delete all local data</string>
+    <string name="confirm_voices">All voice profiles and samples (also at the cloud provider, if uploaded) will be deleted.</string>
+    <string name="confirm_cloud">All your data stored on the backend server will be deleted.</string>
+    <string name="confirm_local">All recordings, projects, presets, profiles and settings on this device will be deleted. This cannot be undone.</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="privacy_body">• Audio you record or import is processed on your device.\n• Nothing is uploaded unless you explicitly start a cloud action and accept the upload notice.\n• The microphone is used only while you press Record or Live; there is no hidden or background recording.\n• Voice cloning requires your explicit consent and may only be used with voices you own or have permission to use.\n• Converted cloud audio is labeled as AI-generated.\n• Your access token is stored encrypted on this device.\n• You can delete voice samples, profiles, server data and all local data in Settings.\n• Payment details are never stored by this app.</string>
+
+    <!-- Subscription -->
+    <string name="subscription">Subscription and credits</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="restore_purchases">Restore purchases</string>
+    <string name="free_plan_features">• Basic offline voice effects\n• Recording and live voice changer\n• Audio import and export\n• Basic editor\n• Local presets\n• Limited AI credits</string>
+    <string name="premium_features">• Advanced cloud AI processing\n• Additional voice effects\n• Advanced editing tools\n• Higher processing limits\n• Additional voice profiles\n• Optional cloud storage</string>
+    <string name="billing_not_configured">Purchases not available yet</string>
+    <string name="billing_not_configured_body">Google Play Billing is not connected in this build, so subscriptions cannot be bought or restored here. Offline features are never locked. Prices will be shown clearly before any purchase.</string>
+    <string name="usage_history">Usage history</string>
+
+    <!-- Compatibility -->
+    <string name="compat_title">Games and chat compatibility</string>
+    <string name="this_device">This device</string>
+    <string name="low_latency_feature">Low-latency audio</string>
+    <string name="pro_audio_feature">Pro audio</string>
+    <string name="output_devices">Output devices</string>
+    <string name="input_devices">Input devices</string>
+    <string name="what_works">What works</string>
+    <string name="what_does_not">What does not work</string>
+    <string name="compat_works">• Export processed audio and share it to any messenger or game chat.\n• Bluetooth and wired headsets, and USB audio devices where the phone supports them.\n• Playing processed voice through the speaker or an audio cable into another device.</string>
+    <string name="compat_not">An ordinary Android app cannot replace the system microphone for other apps. Voice Magic AI does not change what games, messengers or phone calls hear from your microphone. Use export and sharing, or external audio routing hardware.</string>
+</resources>

@@ -1,0 +1,29 @@
+# Android / Gradle
+*.iml
+.gradle/
+build/
+local.properties
+.idea/
+.cxx/
+captures/
+*.apk
+*.aab
+
+# Signing and secrets - NEVER commit
+*.jks
+*.keystore
+keystore.properties
+.env
+*.pem
+
+# Backend
+__pycache__/
+*.pyc
+.pytest_cache/
+backend/data/
+*.db
+.venv/
+venv/
+
+# OS
+.DS_Store

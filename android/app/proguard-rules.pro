@@ -1,0 +1,2 @@
+-keep class app.voicemagic.audio.NativeAudioEngine { *; }
+-keepclassmembers class * { native <methods>; }
