@@ -37,7 +37,7 @@ class AudioOpsTest {
     }
 
     @Test fun wavRoundTrip() {
-        val f = File.createTempFile("t", ".wav")
+        val f = File.createTempFile("wavtest", ".wav")
         val src = FloatArray(2000) { Math.sin(it * 0.05).toFloat() * 0.5f }
         WavIO.write(f, src, 22050)
         val d = WavIO.read(f)
