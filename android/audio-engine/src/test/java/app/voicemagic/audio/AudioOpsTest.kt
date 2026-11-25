@@ -36,6 +36,14 @@ class AudioOpsTest {
         assertEquals(p, EffectParams.deserialize(p.serialize()))
     }
 
+    @Test fun legacySeventeenValueProfilesStillLoad() {
+        val old = (0 until 17).joinToString(",") { if (it == 0) "5.0" else "0.0" }
+        val p = EffectParams.deserialize(old)
+        assertNotNull(p)
+        assertEquals(5f, p!!.pitchSemitones, 0f)
+        assertEquals(0f, p.tremoloDepth, 0f)
+    }
+
     @Test fun wavRoundTrip() {
         val f = File.createTempFile("wavtest", ".wav")
         val src = FloatArray(2000) { Math.sin(it * 0.05).toFloat() * 0.5f }

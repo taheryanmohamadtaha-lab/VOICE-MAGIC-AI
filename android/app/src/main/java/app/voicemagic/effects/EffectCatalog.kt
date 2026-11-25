@@ -29,17 +29,24 @@ object EffectCatalog {
     private fun lerp(a: Float, b: Float, t: Float) = a + (b - a) * t
 
     val all: List<VoiceEffect> = listOf(
+        // Human-voice presets: pitch + formant (vocal tract) + tone shaping, strong enough to be clearly different from the original.
         VoiceEffect("male", R.string.fx_male, R.string.fx_male_d, EffectCategory.VOICE) { t ->
-            EffectParams(pitchSemitones = lerp(-1f, -5f, t), formant = -0.6f * t, eqLowDb = 2f * t)
+            EffectParams(pitchSemitones = lerp(-3f, -8f, t), formant = lerp(-0.4f, -0.9f, t),
+                eqLowDb = lerp(2f, 6f, t), eqMidDb = -1.5f * t, eqHighDb = -lerp(1f, 4f, t))
         },
         VoiceEffect("female", R.string.fx_female, R.string.fx_female_d, EffectCategory.VOICE) { t ->
-            EffectParams(pitchSemitones = lerp(2f, 6f, t), formant = 0.6f * t, eqHighDb = 2f * t)
+            EffectParams(pitchSemitones = lerp(3f, 8f, t), formant = lerp(0.4f, 0.9f, t),
+                eqLowDb = -lerp(2f, 6f, t), eqMidDb = 1.5f * t, eqHighDb = lerp(2f, 5f, t))
         },
         VoiceEffect("child", R.string.fx_child, R.string.fx_child_d, EffectCategory.VOICE) { t ->
-            EffectParams(pitchSemitones = lerp(4f, 8f, t), formant = 0.8f * t)
+            EffectParams(pitchSemitones = lerp(6f, 11f, t), formant = lerp(0.6f, 1f, t),
+                eqLowDb = -lerp(3f, 8f, t), eqMidDb = 2f * t, eqHighDb = lerp(3f, 6f, t))
         },
         VoiceEffect("elderly", R.string.fx_elderly, R.string.fx_elderly_d, EffectCategory.VOICE) { t ->
-            EffectParams(pitchSemitones = lerp(-0.5f, -2f, t), ringFreqHz = 5.5f, ringMix = 0.35f * t, eqHighDb = -5f * t)
+            EffectParams(pitchSemitones = lerp(-1f, -3f, t), formant = -0.2f * t,
+                vibratoDepth = lerp(0.2f, 0.6f, t), vibratoHz = 5.5f,
+                tremoloDepth = lerp(0.1f, 0.35f, t), tremoloHz = 4.5f,
+                eqLowDb = -2f * t, eqHighDb = -lerp(2f, 7f, t), distortion = 0.04f * t)
         },
         VoiceEffect("robot", R.string.fx_robot, R.string.fx_robot_d, EffectCategory.CHARACTER) { t ->
             EffectParams(pitchSemitones = -1f, ringFreqHz = 55f, ringMix = lerp(0.6f, 1f, t), eqMidDb = 3f)

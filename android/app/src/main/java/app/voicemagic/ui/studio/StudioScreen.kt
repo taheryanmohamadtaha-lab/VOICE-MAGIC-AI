@@ -73,7 +73,7 @@ data class StudioState(
     val category: EffectCategory? = null,
     val selectedId: String? = null,
     val customName: String? = null,
-    val intensity: Float = 0.5f,
+    val intensity: Float = 0.75f,
     val params: EffectParams = EffectParams(),
     val sample: AudioData? = null,
     val recordingSample: Boolean = false,

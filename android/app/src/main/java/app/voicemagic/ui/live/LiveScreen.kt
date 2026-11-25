@@ -65,7 +65,7 @@ import kotlinx.coroutines.launch
 
 data class LiveState(
     val effectId: String? = null,
-    val intensity: Float = 0.5f,
+    val intensity: Float = 0.75f,
     val params: EffectParams = EffectParams(),
     val muted: Boolean = false,
     val monitor: Boolean = false,

@@ -5,7 +5,11 @@ import android.media.AudioDeviceInfo
 import android.media.AudioManager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,6 +54,7 @@ import app.voicemagic.ui.components.ParamSlider
 import app.voicemagic.ui.components.SectionTitle
 import app.voicemagic.ui.components.VmCard
 import app.voicemagic.ui.theme.AccentChoices
+import app.voicemagic.ui.theme.ThemePresets
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -89,6 +94,24 @@ fun SettingsScreen(c: AppContainer, go: (String) -> Unit) {
                 FilterChip(ui.themeMode == ThemeMode.DARK, { scope.launch { c.settings.setTheme(ThemeMode.DARK) } }, label = { Text(stringResource(R.string.theme_dark)) })
                 FilterChip(ui.themeMode == ThemeMode.LIGHT, { scope.launch { c.settings.setTheme(ThemeMode.LIGHT) } }, label = { Text(stringResource(R.string.theme_light)) })
                 FilterChip(ui.themeMode == ThemeMode.SYSTEM, { scope.launch { c.settings.setTheme(ThemeMode.SYSTEM) } }, label = { Text(stringResource(R.string.theme_system)) })
+            }
+            Text(stringResource(R.string.theme_preset), style = MaterialTheme.typography.bodyMedium)
+            Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                ThemePresets.forEach { pr ->
+                    val sel = ui.preset == pr.id
+                    Column(
+                        Modifier.clickable { scope.launch { c.settings.setPreset(pr.id, pr.accent) } },
+                        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+                    ) {
+                        Box(
+                            Modifier.size(52.dp)
+                                .background(Brush.linearGradient(listOf(Color(pr.darkBg.toInt()), Color(pr.darkVariant.toInt()), Color(pr.accent.toInt()))), CircleShape)
+                                .border(BorderStroke(if (sel) 3.dp else 1.dp, if (sel) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant), CircleShape),
+                            contentAlignment = androidx.compose.ui.Alignment.Center,
+                        ) { if (sel) Text("✓", color = Color.White) }
+                        Text(stringResource(pr.name), style = MaterialTheme.typography.labelSmall)
+                    }
+                }
             }
             Text(stringResource(R.string.accent_color), style = MaterialTheme.typography.bodyMedium)
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -131,6 +154,7 @@ fun SettingsScreen(c: AppContainer, go: (String) -> Unit) {
             OutlinedButton({ go("settings/subscription") }, Modifier.fillMaxWidth()) { Text(stringResource(R.string.subscription)) }
             OutlinedButton({ go("settings/compat") }, Modifier.fillMaxWidth()) { Text(stringResource(R.string.compat_title)) }
             OutlinedButton({ go("settings/privacy") }, Modifier.fillMaxWidth()) { Text(stringResource(R.string.privacy_policy)) }
+            OutlinedButton({ go("about") }, Modifier.fillMaxWidth()) { Text(stringResource(R.string.about)) }
         }
 
         VmCard {

@@ -257,4 +257,23 @@
     <string name="what_does_not">چه چیزی کار نمی‌کند</string>
     <string name="compat_works">• خروجی گرفتن از صدای پردازش‌شده و ارسال آن به هر پیام‌رسان یا چت بازی.\n• هدست بلوتوث و سیمی و دستگاه‌های صوتی USB در گوشی‌هایی که پشتیبانی می‌کنند.\n• پخش صدای پردازش‌شده از بلندگو یا با کابل صدا به دستگاه دیگر.</string>
     <string name="compat_not">یک برنامه معمولی اندروید نمی‌تواند میکروفون سیستم را برای برنامه‌های دیگر عوض کند. Voice Magic AI چیزی را که بازی‌ها، پیام‌رسان‌ها یا تماس تلفنی از میکروفون شما می‌شنوند تغییر نمی‌دهد. از خروجی گرفتن و اشتراک‌گذاری یا سخت‌افزار مسیریابی صدای خارجی استفاده کنید.</string>
+
+    <string name="back">بازگشت</string>
+    <string name="exit_app">خروج</string>
+    <string name="exit_confirm">از Voice Magic AI خارج می‌شوید؟</string>
+    <string name="about">درباره سازنده</string>
+    <string name="about_version">نسخه %1$s</string>
+    <string name="about_creator_label">سازنده</string>
+    <string name="about_creator_role">طراح و توسعه‌دهنده Voice Magic AI</string>
+    <string name="about_description">Voice Magic AI یک برنامه تغییر صدا و استودیوی صوتی است: افکت‌های آفلاین، پردازش زنده صدا، ویرایشگر صدا و آزمایشگاه اختیاری هوش مصنوعی ابری. امکانات آفلاین هیچ‌وقت به حساب کاربری یا اشتراک نیاز ندارند.</string>
+    <string name="about_tech_title">ساخته‌شده با</string>
+    <string name="about_tech_body">Kotlin، Jetpack Compose، Room، موتور DSP به زبان C++ با Oboe/AAudio و بک‌اند FastAPI برای امکانات اختیاری هوش مصنوعی.</string>
+    <string name="about_license">متن‌باز، مجوز MIT.</string>
+    <string name="theme_preset">تم</string>
+    <string name="preset_neon">نئون</string>
+    <string name="preset_ocean">اقیانوس</string>
+    <string name="preset_sunset">غروب</string>
+    <string name="preset_forest">جنگل</string>
+    <string name="preset_rose">گل‌سرخ</string>
+    <string name="preset_amoled">مشکی</string>
 </resources>

@@ -6,11 +6,17 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import android.app.Activity
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.ContentCut
 import androidx.compose.material.icons.filled.Home
@@ -18,13 +24,20 @@ import androidx.compose.material.icons.filled.LibraryMusic
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -41,6 +54,7 @@ import app.voicemagic.ui.editor.EditorScreen
 import app.voicemagic.ui.home.HomeScreen
 import app.voicemagic.ui.library.LibraryScreen
 import app.voicemagic.ui.live.LiveScreen
+import app.voicemagic.ui.settings.AboutScreen
 import app.voicemagic.ui.settings.CompatibilityScreen
 import app.voicemagic.ui.settings.PrivacyScreen
 import app.voicemagic.ui.settings.SettingsScreen
@@ -69,8 +83,36 @@ fun AppRoot(c: AppContainer) {
             restoreState = true
         }
     }
+    val activity = LocalContext.current as? Activity
+    var askExit by remember { mutableStateOf(false) }
+    val isHome = current == null || current == Dest.Home.route
+    val titleRes: Int? = when {
+        current == "about" -> R.string.about
+        current == "settings/privacy" -> R.string.privacy_policy
+        current == "settings/compat" -> R.string.compat_title
+        current == "settings/subscription" -> R.string.subscription
+        else -> Dest.values().firstOrNull { it.route == current }?.label
+    }
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
+        topBar = {
+            Surface(color = MaterialTheme.colorScheme.surface, tonalElevation = 2.dp) {
+                Row(Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                    if (isHome) {
+                        IconButton({ go("about") }) { Icon(Icons.Filled.Info, stringResource(R.string.about)) }
+                        Text(stringResource(R.string.app_name), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f).padding(horizontal = 8.dp))
+                        IconButton({ askExit = true }) { Icon(Icons.AutoMirrored.Filled.ExitToApp, stringResource(R.string.exit_app)) }
+                    } else {
+                        // AutoMirrored: the arrow points the right way in Persian (RTL) and English (LTR).
+                        IconButton({
+                            val parent = if (current?.startsWith("settings/") == true || current == "about") "settings" else "home"
+                            if (!nav.popBackStack(parent, false)) go(parent)
+                        }) { Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back)) }
+                        Text(titleRes?.let { stringResource(it) } ?: "", style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(horizontal = 8.dp))
+                    }
+                }
+            }
+        },
         bottomBar = {
             Surface(color = MaterialTheme.colorScheme.surface, tonalElevation = 3.dp) {
                 // 7 destinations: scrollable bar so labels stay readable at large font sizes.
@@ -101,6 +143,17 @@ fun AppRoot(c: AppContainer) {
             composable("settings/privacy") { PrivacyScreen() }
             composable("settings/compat") { CompatibilityScreen() }
             composable("settings/subscription") { SubscriptionScreen(c) }
+            composable("about") { AboutScreen() }
         }
+    }
+
+    if (askExit) {
+        AlertDialog(
+            onDismissRequest = { askExit = false },
+            title = { Text(stringResource(R.string.exit_app)) },
+            text = { Text(stringResource(R.string.exit_confirm)) },
+            confirmButton = { TextButton({ askExit = false; activity?.finishAffinity() }) { Text(stringResource(R.string.exit_app)) } },
+            dismissButton = { TextButton({ askExit = false }) { Text(stringResource(R.string.cancel)) } },
+        )
     }
 }

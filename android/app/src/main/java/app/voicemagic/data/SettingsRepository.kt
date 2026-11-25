@@ -23,6 +23,7 @@ data class UiSettings(
     val accent: Long = 0xFF8B5CF6,
     val fontScale: Float = 1f,
     val language: String = "fa",
+    val preset: String = "neon",
 )
 
 class SettingsRepository(private val context: Context) {
@@ -31,6 +32,7 @@ class SettingsRepository(private val context: Context) {
         val accent = stringPreferencesKey("accent")
         val font = floatPreferencesKey("font_scale")
         val lang = stringPreferencesKey("language")
+        val preset = stringPreferencesKey("theme_preset")
         val favorites = stringSetPreferencesKey("favorites")
         val recent = stringPreferencesKey("recent_effects")
         val backendUrl = stringPreferencesKey("backend_url")
@@ -47,6 +49,7 @@ class SettingsRepository(private val context: Context) {
             accent = p[K.accent]?.toLongOrNull() ?: 0xFF8B5CF6,
             fontScale = p[K.font] ?: 1f,
             language = p[K.lang] ?: "fa",
+            preset = p[K.preset] ?: "neon",
         )
     }
     val favorites: Flow<Set<String>> = context.store.data.map { it[K.favorites] ?: emptySet() }
@@ -62,6 +65,7 @@ class SettingsRepository(private val context: Context) {
     suspend fun setTheme(m: ThemeMode) = edit { it[K.theme] = m.name }
     suspend fun setAccent(argb: Long) = edit { it[K.accent] = argb.toString() }
     suspend fun setFontScale(s: Float) = edit { it[K.font] = s }
+    suspend fun setPreset(id: String, accent: Long) = edit { it[K.preset] = id; it[K.accent] = accent.toString() }
     suspend fun setLanguage(l: String) = edit { it[K.lang] = l }
     suspend fun setBackendUrl(u: String) = edit { it[K.backendUrl] = u.trim().trimEnd('/') }
     suspend fun setApiToken(t: String) = edit { it[K.tokenEnc] = SecureStore.encrypt(t.trim()) }

@@ -271,4 +271,23 @@
     <string name="what_does_not">What does not work</string>
     <string name="compat_works">• Export processed audio and share it to any messenger or game chat.\n• Bluetooth and wired headsets, and USB audio devices where the phone supports them.\n• Playing processed voice through the speaker or an audio cable into another device.</string>
     <string name="compat_not">An ordinary Android app cannot replace the system microphone for other apps. Voice Magic AI does not change what games, messengers or phone calls hear from your microphone. Use export and sharing, or external audio routing hardware.</string>
+
+    <string name="back">Back</string>
+    <string name="exit_app">Exit</string>
+    <string name="exit_confirm">Close Voice Magic AI?</string>
+    <string name="about">About</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_creator_label">Creator</string>
+    <string name="about_creator_role">Designer and developer of Voice Magic AI</string>
+    <string name="about_description">Voice Magic AI is a voice changer and audio studio: offline voice effects, live voice processing, an audio editor and an optional cloud AI lab. Offline features never need an account or subscription.</string>
+    <string name="about_tech_title">Built with</string>
+    <string name="about_tech_body">Kotlin, Jetpack Compose, Room, a C++ DSP engine with Oboe/AAudio, and a FastAPI backend for the optional AI features.</string>
+    <string name="about_license">Open source, MIT license.</string>
+    <string name="theme_preset">Theme</string>
+    <string name="preset_neon">Neon</string>
+    <string name="preset_ocean">Ocean</string>
+    <string name="preset_sunset">Sunset</string>
+    <string name="preset_forest">Forest</string>
+    <string name="preset_rose">Rose</string>
+    <string name="preset_amoled">Black</string>
 </resources>

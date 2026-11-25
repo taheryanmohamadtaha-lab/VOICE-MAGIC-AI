@@ -80,7 +80,7 @@ int main() {
 
     { // stress: extreme params on noise must stay finite and within [-1,1]
         vm::EffectChain c; c.prepare(44100.f);
-        float q[vm::kParamCount] = {12, 1, 1, 900, 0.9f, 1, 1, 2000, 1, 18, 18, 18, -10, 1, 4, 1, 1};
+        float q[vm::kParamCount] = {12, 1, 1, 900, 0.9f, 1, 1, 2000, 1, 18, 18, 18, -10, 1, 4, 1, 1, 1, 12, 1, 12};
         c.setParams(q);
         std::mt19937 g(2); std::uniform_real_distribution<float> d(-1.f, 1.f);
         std::vector<float> in(88200); for (auto& v : in) v = d(g);
@@ -100,6 +100,42 @@ int main() {
             for (float v : out) if (!std::isfinite(v)) ok = false;
         }
         CHECK(ok, "parameter changes between blocks are glitch-free (finite)");
+    }
+
+    { // tremolo must modulate amplitude
+        vm::EffectChain c; c.prepare(fs);
+        vm::defaultParams(p); p[vm::P_TREM_DEPTH] = 0.8f; p[vm::P_TREM_HZ] = 5.f; c.setParams(p);
+        auto out = run(c, sine(300.f, fs, 48000));
+        float mn = 9.f, mx = 0.f;
+        for (int i = 0; i + 480 <= (int)out.size(); i += 480) {
+            float pk = 0.f; for (int k = 0; k < 480; ++k) pk = std::max(pk, std::fabs(out[i + k]));
+            mn = std::min(mn, pk); mx = std::max(mx, pk);
+        }
+        std::printf("      tremolo block-peak min %.3f max %.3f\n", mn, mx);
+        CHECK(mx > 0.4f && mn < mx * 0.5f, "tremolo modulates amplitude");
+    }
+
+    { // vibrato keeps the pitch centred and stays finite
+        vm::EffectChain c; c.prepare(fs);
+        vm::defaultParams(p); p[vm::P_VIB_DEPTH] = 0.5f; p[vm::P_VIB_HZ] = 5.5f; c.setParams(p);
+        auto out = run(c, sine(440.f, fs, 48000));
+        float f = estimateFreq(out, 12000, 48000, fs);
+        bool ok = true; for (float v : out) if (!std::isfinite(v)) ok = false;
+        std::printf("      vibrato mean freq %.1f Hz\n", f);
+        CHECK(ok && std::fabs(f - 440.f) < 440.f * 0.06f, "vibrato keeps mean pitch");
+    }
+
+    { // formant shift must change the spectrum (energy near 2.5 kHz differs) without changing level wildly
+        auto energy = [&](float formant) {
+            vm::EffectChain c; c.prepare(fs);
+            vm::defaultParams(p); p[vm::P_FORMANT] = formant; c.setParams(p);
+            auto out = run(c, sine(2700.f, fs, 24000, 0.3f));
+            double e = 0; for (size_t i = 4800; i < out.size(); ++i) e += out[i] * out[i];
+            return std::sqrt(e / (out.size() - 4800));
+        };
+        float up = energy(1.f), flat = energy(0.f), down = energy(-1.f);
+        std::printf("      rms at 2.7kHz: formant+1 %.3f, 0 %.3f, -1 %.3f\n", up, flat, down);
+        CHECK(up > flat * 1.2f && down < flat, "formant shift moves resonances (up boosts, down cuts at 2.7 kHz)");
     }
 
     std::printf(failures ? "\n%d FAILED\n" : "\nALL PASSED\n", failures);

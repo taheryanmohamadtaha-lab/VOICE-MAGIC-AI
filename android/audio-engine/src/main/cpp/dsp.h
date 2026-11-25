@@ -12,12 +12,12 @@
 
 namespace vm {
 
-constexpr int kParamCount = 17;
+constexpr int kParamCount = 21;
 
 // Keep in sync with EffectParams.kt (index order of toArray()).
 enum Param : int {
     P_PITCH = 0,        // semitones, -12..+12
-    P_FORMANT,          // -1..+1  (timbre tilt, an approximation - NOT true formant shifting)
+    P_FORMANT,          // -1..+1  vocal-tract (formant) shift, approximated with paired EQ peaks - NOT true LPC/PSOLA formant shifting
     P_ECHO_MIX,         // 0..1
     P_ECHO_DELAY_MS,    // 20..900
     P_ECHO_FEEDBACK,    // 0..0.9
@@ -32,7 +32,11 @@ enum Param : int {
     P_DENOISE,          // 0/1 adaptive noise suppression
     P_OUT_GAIN,         // linear
     P_DISTORTION,       // 0..1
-    P_BANDPASS          // 0/1 telephone/radio band limiting
+    P_BANDPASS,         // 0/1 telephone/radio band limiting
+    P_TREM_DEPTH,       // 0..1 amplitude wobble (elderly voice)
+    P_TREM_HZ,          // 0.5..12
+    P_VIB_DEPTH,        // 0..1 semitones of pitch wobble
+    P_VIB_HZ            // 0.5..12
 };
 
 inline void defaultParams(float* p) {
@@ -43,6 +47,8 @@ inline void defaultParams(float* p) {
     p[P_RING_FREQ] = 30.f;
     p[P_GATE_DB] = -90.f;
     p[P_OUT_GAIN] = 1.f;
+    p[P_TREM_HZ] = 5.f;
+    p[P_VIB_HZ] = 5.5f;
 }
 
 // ---------------------------------------------------------------- Biquad (RBJ)
@@ -106,6 +112,7 @@ public:
         phase_ = 0.f;
     }
     void setSemitones(float s) { ratio_ = std::pow(2.f, s / 12.f); }
+    void setRatio(float r) { ratio_ = r; }
     float process(float x) {
         const int n = (int)buf_.size();
         buf_[w_] = x;
@@ -248,6 +255,8 @@ public:
         gate_.reset();
         for (auto* b : {&low_, &mid_, &high_, &hp_, &lp_}) b->reset();
         ringPhase_ = 0.f;
+        tremPhase_ = vibPhase_ = 0.f;
+        for (auto* b : {&fa0_, &fa1_, &fa2_, &fb0_, &fb1_, &fb2_}) b->reset();
         localVersion_ = ~0u;  // force coefficient refresh
         syncParams();
     }
@@ -276,7 +285,20 @@ public:
 private:
     float processSample(float x) {
         if (p_[P_DENOISE] > 0.5f || gateEnabled_) x = gate_.process(x);
-        if (pitchOn_) x = pitch_.process(x);
+        if (pitchOn_) {
+            if (vibDepth_ > 0.001f) {
+                vibPhase_ += vibInc_;
+                if (vibPhase_ > 6.2831853f) vibPhase_ -= 6.2831853f;
+                // 2^(x/12) ~= 1 + 0.05776 x for small x (x = vibrato in semitones)
+                pitch_.setRatio(baseRatio_ * (1.f + vibDepth_ * 0.05776f * std::sin(vibPhase_)));
+            }
+            x = pitch_.process(x);
+        }
+        if (tremDepth_ > 0.001f) {
+            tremPhase_ += tremInc_;
+            if (tremPhase_ > 6.2831853f) tremPhase_ -= 6.2831853f;
+            x *= 1.f - tremDepth_ * (0.5f + 0.5f * std::sin(tremPhase_));
+        }
         if (p_[P_RING_MIX] > 0.001f) {
             const float c = std::sin(ringPhase_);
             ringPhase_ += ringInc_;
@@ -293,6 +315,10 @@ private:
         if (low_.active) x = low_.process(x);
         if (mid_.active) x = mid_.process(x);
         if (high_.active) x = high_.process(x);
+        if (formantOn_) {
+            x = fa0_.process(fa1_.process(fa2_.process(x)));
+            x = fb0_.process(fb1_.process(fb2_.process(x)));
+        }
         if (p_[P_ECHO_MIX] > 0.001f) x = echo_.process(x, p_[P_ECHO_MIX], p_[P_ECHO_FEEDBACK]);
         if (p_[P_REVERB_MIX] > 0.001f) x = reverb_.process(x, p_[P_REVERB_MIX]);
         return x * p_[P_OUT_GAIN];
@@ -312,17 +338,40 @@ private:
         p_[P_RING_MIX] = clampf(p_[P_RING_MIX], 0.f, 1.f);
         p_[P_DISTORTION] = clampf(p_[P_DISTORTION], 0.f, 1.f);
         p_[P_OUT_GAIN] = clampf(p_[P_OUT_GAIN], 0.f, 4.f);
+        p_[P_TREM_DEPTH] = clampf(p_[P_TREM_DEPTH], 0.f, 1.f);
+        p_[P_TREM_HZ] = clampf(p_[P_TREM_HZ], 0.5f, 12.f);
+        p_[P_VIB_DEPTH] = clampf(p_[P_VIB_DEPTH], 0.f, 1.f);
+        p_[P_VIB_HZ] = clampf(p_[P_VIB_HZ], 0.5f, 12.f);
 
-        pitchOn_ = std::fabs(p_[P_PITCH]) > 0.01f;
+        vibDepth_ = p_[P_VIB_DEPTH];
+        tremDepth_ = p_[P_TREM_DEPTH];
+        vibInc_ = 6.2831853f * p_[P_VIB_HZ] / fs_;
+        tremInc_ = 6.2831853f * p_[P_TREM_HZ] / fs_;
+        baseRatio_ = std::pow(2.f, p_[P_PITCH] / 12.f);
+        pitchOn_ = std::fabs(p_[P_PITCH]) > 0.01f || vibDepth_ > 0.001f;
         pitch_.setSemitones(p_[P_PITCH]);
         echo_.setDelaySamples((int)(clampf(p_[P_ECHO_DELAY_MS], 20.f, 900.f) * fs_ / 1000.f));
         reverb_.setRoom(p_[P_REVERB_ROOM]);
         ringInc_ = 6.2831853f * clampf(p_[P_RING_FREQ], 1.f, 2000.f) / fs_;
 
         const float f = p_[P_FORMANT];
-        const float lowDb = p_[P_EQ_LOW] - f * 6.f;
+        const float lowDb = p_[P_EQ_LOW] - f * 2.f;
         const float midDb = p_[P_EQ_MID];
-        const float highDb = p_[P_EQ_HIGH] + f * 6.f;
+        const float highDb = p_[P_EQ_HIGH] + f * 2.f;
+
+        // Formant shift approximation: boost the vowel resonances at their shifted position and
+        // cut them at the original position, for F1..F3 (about +-32% at |f| = 1).
+        formantOn_ = std::fabs(f) > 0.02f;
+        if (formantOn_) {
+            const float s = std::pow(2.f, 0.4f * f), a = std::fabs(f);
+            static const float cf[3] = {500.f, 1500.f, 2500.f};
+            Biquad* up[3] = {&fa0_, &fa1_, &fa2_};
+            Biquad* dn[3] = {&fb0_, &fb1_, &fb2_};
+            for (int i = 0; i < 3; ++i) {
+                up[i]->peaking(fs_, std::min(cf[i] * s, fs_ * 0.45f), 5.f * a, 1.4);
+                dn[i]->peaking(fs_, std::min(cf[i], fs_ * 0.45f), -4.f * a, 1.4);
+            }
+        }
         low_.active = std::fabs(lowDb) > 0.05f;
         mid_.active = std::fabs(midDb) > 0.05f;
         high_.active = std::fabs(highDb) > 0.05f;
@@ -351,8 +400,11 @@ private:
     Reverb reverb_;
     NoiseGate gate_;
     Biquad low_, mid_, high_, hp_, lp_;
-    bool pitchOn_ = false, gateEnabled_ = false;
+    bool pitchOn_ = false, gateEnabled_ = false, formantOn_ = false;
     float ringPhase_ = 0.f, ringInc_ = 0.f;
+    float tremPhase_ = 0.f, tremInc_ = 0.f, tremDepth_ = 0.f;
+    float vibPhase_ = 0.f, vibInc_ = 0.f, vibDepth_ = 0.f, baseRatio_ = 1.f;
+    Biquad fa0_, fa1_, fa2_, fb0_, fb1_, fb2_;
     float preLimitPeak_ = 0.f;
 };
 
